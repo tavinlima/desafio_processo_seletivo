@@ -5,36 +5,37 @@ export default class repository extends Component{
         super(props);
         this.state = {
             repositorios : [],
-            nomeUsuario : '',
+            userName : '',
             id : 0,
             name : '',
             description : '',
-            dateCriacao : 0,
+            created_at : 0,
             size : 0
         };
     };
 
     atualizaEstadoNome = async (event) => {
-        await this.setState({ nomeUsuario: event.target.value })
-        console.log(this.state.nomeUsuario)
+        await this.setState({ userName: event.target.value })
+        console.log(this.state.userName)
     }
 
     buscarRepositorio = () => {
         console.log('Chamada para a API.')
 
-        fetch(`https://api.github.com/users/${this.state.nomeUsuario}/repos`)
+        fetch(`https://api.github.com/users/${this.state.userName}/repos?per_page=10&sort="OnOrder",Ascending,`)
 
-        .then(resposta => resposta.json()).then(dados => this.setState({ repositorios: dados})).catch(erro => console.log(erro))
+        .then(resposta => resposta.json()).then(dados => this.setState({ repositorios: dados})).catch(erro => console.log(erro));
     }
-
-    // mostrarRepositorio = (event) => {
-        
-    //     console.log(this.buscarUsuario.nomeUsuario)
-    // }
 
     componentDidMount(){
-        
     }
+
+    // limparCampos = () => {
+    //     this.setState({
+    //         userName : '',
+    //     })
+    //     console.log('Os states foram resetados!');
+    // }
 
 
     render(){
@@ -44,18 +45,19 @@ export default class repository extends Component{
                     <section>
                         <form onSubmit={this.buscarRepositorio}>
                         <div>
-                            <input type='text' value={this.state.nomeUsuario} placeholder='Username do GitHub' onChange={this.atualizaEstadoNome}/>
-                            <button type='button' onClick={() => this.buscarRepositorio()}>Enviar</button>
+                            <input type='text' value={this.state.userName} placeholder='Username do GitHub' onChange={this.atualizaEstadoNome}/>
+                            <button type='button' disabled={this.state.userName === '' ? 'none' : ''} onClick={() => this.buscarRepositorio()}>Enviar</button>
                         </div>
                         </form>
 
-                        <h2>Repositórios</h2>
+                        <h2 id='repositories'>Repositórios {this.state.userName === '' ? '': 'do ' + this.state.userName}</h2>
                         <table>
                             <thead>
                                 <tr>
                                     <th>Id</th>
                                     <th>Nome</th>
                                     <th>Descrição</th>
+                                    <th>Data de criação</th>
                                     <th>Tamanho</th>
                                 </tr>
                             </thead>
@@ -68,7 +70,7 @@ export default class repository extends Component{
                                                 <td>{repositories.id}</td>
                                                 <td>{repositories.name}</td>
                                                 <td>{repositories.description}</td>
-                                                <td>{repositories.dateCriacao}</td>
+                                                <td>{repositories.created_at}</td>
                                                 <td>{repositories.size}</td>
                                             </tr>
                                         )
@@ -76,7 +78,7 @@ export default class repository extends Component{
                                 }
                             </tbody>
                         </table>
-                        
+                        <a classname='App-link' href='http://localhost:3000/'>Voltar pra Home</a>
                     </section>
                 </main>
             </div>

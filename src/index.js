@@ -6,7 +6,7 @@ import './index.css';
 import App from './App';
 
 import reportWebVitals from './reportWebVitals';
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import { Redirect, Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import repository from './pages/repositories';
 
 const routing = (
@@ -15,6 +15,7 @@ const routing = (
       <Switch>
         <Route exact path="/" component={App} />
         <Route path='/repositories' component={repository}/>
+        <Redirect to="/"/>
       </Switch>
     </div>
   </Router>
